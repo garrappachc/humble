@@ -1,0 +1,9 @@
+.zig-cache/
+zig-out/
+/release/
+/debug/
+/build/
+/build-*/
+/docgen_tmp/
+
+src/proto/*.pb.zig

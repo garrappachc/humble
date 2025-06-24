@@ -79,7 +79,7 @@ pub fn build(b: *std.Build) void {
     exe.root_module.addImport("protobuf", protobuf_dep.module("protobuf"));
 
     const gen_proto = b.step("gen-proto", "generates zig files from protocol buffer definitions");
-    const protoc_step = protobuf.RunProtocStep.create(b, protobuf_dep.builder, target, .{
+    var protoc_step = protobuf.RunProtocStep.create(b, protobuf_dep.builder, target, .{
         // out directory for the generated zig files
         .destination_directory = b.path("src/proto"),
         .source_files = &.{
@@ -88,6 +88,7 @@ pub fn build(b: *std.Build) void {
         .include_directories = &.{},
     });
     gen_proto.dependOn(&protoc_step.step);
+    b.getInstallStep().dependOn(gen_proto);
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
